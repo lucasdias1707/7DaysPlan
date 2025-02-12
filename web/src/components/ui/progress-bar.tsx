@@ -1,4 +1,4 @@
-import * as ProgressPrimitive from '@radix-ui/react-progress'
+import * as ProgressPrimitive from "@radix-ui/react-progress";
 
 export function Progress(props: ProgressPrimitive.ProgressProps) {
   return (
@@ -6,7 +6,7 @@ export function Progress(props: ProgressPrimitive.ProgressProps) {
       {...props}
       className="bg-zinc-900 rounded-full h-2"
     />
-  )
+  );
 }
 
 export function ProgressIndicator(
@@ -15,7 +15,7 @@ export function ProgressIndicator(
   return (
     <ProgressPrimitive.Indicator
       {...props}
-      className="bg-gradient-to-r from-pink-500 to-violet-500 w-1/2 h-2 rounded-full"
+      className="bg-gradient-to-r from-cyan-400 to-blue-500 w-1/2 h-2 rounded-full"
     />
-  )
+  );
 }

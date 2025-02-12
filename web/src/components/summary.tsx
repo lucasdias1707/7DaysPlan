@@ -84,7 +84,7 @@ export function Summary() {
                   const time = dayjs(goal.completedAt).format("HH:mm");
                   return (
                     <li key={goal.id} className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-pink-500" />
+                      <CheckCircle2 className="size-4 text-cyan-500" />
                       <span className="text-sm text-zinc-400">
                         Você completou "
                         <span className="text-zinc-100">{goal.title}</span>" às{" "}
