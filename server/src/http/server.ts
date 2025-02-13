@@ -7,6 +7,7 @@ import {
 } from "fastify-type-provider-zod";
 import { createCompletionRoute } from "./routes/create-completion";
 import { createGoalRoute } from "./routes/create-goal";
+import { deleteCompletionRoute } from "./routes/delete-completion";
 import { getPendingRoute } from "./routes/get-pending-goals";
 import { getWeekSummaryRoute } from "./routes/get-week-summary";
 
@@ -23,10 +24,12 @@ app.register(createGoalRoute);
 app.register(createCompletionRoute);
 app.register(getPendingRoute);
 app.register(getWeekSummaryRoute);
+app.register(deleteCompletionRoute);
 
 app
   .listen({
     port: 3333,
+    host: "0.0.0.0",
   })
   .then(() => {
     console.log("HTTP server running 🔥");

@@ -1,11 +1,19 @@
 import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "../db";
 import { goalCompletions, goals } from "../db/schema";
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 export async function getWeekSummary() {
-  const firstDayOfWeek = dayjs().startOf("week").toDate();
-  const lastDayOfWeek = dayjs().endOf("week").toDate();
+  const firstDayOfWeek = dayjs()
+    .tz("America/Sao_Paulo")
+    .startOf("week")
+    .toDate();
+  const lastDayOfWeek = dayjs().tz("America/Sao_Paulo").endOf("week").toDate();
 
   const goalsCreatedUpToWeek = db.$with("goals_created_up_to_week").as(
     db
@@ -26,7 +34,7 @@ export async function getWeekSummary() {
         title: goals.title,
         completedAt: goalCompletions.createdAt,
         completedAtDate: sql/**sql*/ `
-        DATE(${goalCompletions.createdAt})
+          DATE(${goalCompletions.createdAt} AT TIME ZONE 'America/Sao_Paulo')
         `.as("completedAtDate"),
       })
       .from(goalCompletions)
@@ -52,7 +60,7 @@ export async function getWeekSummary() {
               'completedAt', ${goalsCompletedInWeek.completedAt}
             )
           )      
-            `.as("completions"),
+        `.as("completions"),
       })
       .from(goalsCompletedInWeek)
       .groupBy(goalsCompletedInWeek.completedAtDate)
@@ -72,11 +80,11 @@ export async function getWeekSummary() {
     .with(goalsCreatedUpToWeek, goalsCompletedInWeek, goalsCompletedByWeekDay)
     .select({
       completed:
-        sql/**slq*/ `(SELECT COUNT(*) FROM ${goalsCompletedInWeek})`.mapWith(
+        sql/**sql*/ `(SELECT COUNT(*) FROM ${goalsCompletedInWeek})`.mapWith(
           Number
         ),
       total:
-        sql/**slq*/ `(SELECT SUM(${goalsCreatedUpToWeek.desiredWeeklyFrequency}) FROM ${goalsCreatedUpToWeek})`.mapWith(
+        sql/**sql*/ `(SELECT SUM(${goalsCreatedUpToWeek.desiredWeeklyFrequency}) FROM ${goalsCreatedUpToWeek})`.mapWith(
           Number
         ),
       goalsPerDay: sql/**sql*/ <GoalsPerDay>`
