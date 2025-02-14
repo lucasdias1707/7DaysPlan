@@ -8,6 +8,7 @@ import {
 import { createCompletionRoute } from "./routes/create-completion";
 import { createGoalRoute } from "./routes/create-goal";
 import { deleteCompletionRoute } from "./routes/delete-completion";
+import { deleteGoalRoute } from "./routes/delete-goal";
 import { getPendingRoute } from "./routes/get-pending-goals";
 import { getWeekSummaryRoute } from "./routes/get-week-summary";
 
@@ -25,6 +26,7 @@ app.register(createCompletionRoute);
 app.register(getPendingRoute);
 app.register(getWeekSummaryRoute);
 app.register(deleteCompletionRoute);
+app.register(deleteGoalRoute);
 
 app
   .listen({
