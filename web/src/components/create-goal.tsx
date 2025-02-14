@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { createGoal } from "../http/create-goal";
 import { Button } from "./ui/button";
@@ -35,14 +36,25 @@ export function CreateGoal() {
   type CreateGoalForm = z.infer<typeof createGoalForm>;
 
   async function handleCreateGoal(data: CreateGoalForm) {
-    await createGoal({
+    const response = await createGoal({
       title: data.title,
       desiredWeeklyFrequency: data.desiredWeeklyFrequency,
     });
+    try {
+      const { message } = await response.json();
 
+      if (!response.ok) {
+        throw new Error(message || "Erro desconhecido ao criar meta");
+      }
+    } catch (error) {
+      if (!response.ok) {
+        toast.error(
+          error instanceof Error ? error.message : "Erro desconhecido"
+        );
+      }
+    }
     queryClient.invalidateQueries({ queryKey: ["summary"] });
     queryClient.invalidateQueries({ queryKey: ["pending-goals"] });
-
     reset();
   }
 
