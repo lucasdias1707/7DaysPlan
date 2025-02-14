@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+/* Personaliza a largura e a cor da barra de rolagem */
+.textarea-custom::-webkit-scrollbar {
+  width: 8px;
+}
+
+.textarea-custom::-webkit-scrollbar-track {
+  background: #ffffff; /* Cor do fundo */
+  border-radius: 4px;
+}
+
+.textarea-custom::-webkit-scrollbar-thumb {
+  background: var(--color-blue-500); /* Cor da barra */
+  border-radius: 4px;
+}
+
+.textarea-custom::-webkit-scrollbar-thumb:hover {
+  background: var(--color-blue-600); /* Cor ao passar o mouse */
+}
