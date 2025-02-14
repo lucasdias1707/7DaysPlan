@@ -36,7 +36,7 @@ export function PendingGoals() {
         message ===
         `update or delete on table "goals" violates foreign key constraint "goal_completions_goal_id_goals_id_fk" on table "goal_completions"`
       ) {
-        message = `Não é possível deletar ${title} pois já foi selecionado!`;
+        message = `Não é possível deletar "${title}", pois já foi selecionado!`;
       }
       if (!response.ok) {
         throw new Error(message || "Erro desconhecido ao criar meta");
