@@ -92,24 +92,31 @@ export function Summary() {
                   {goals.map((goal) => {
                     const time = dayjs(goal.completedAt).format("HH:mm");
                     return (
-                      <li key={goal.id} className="flex items-center gap-2">
-                        <CheckCircle2 className="size-4 text-cyan-500" />
-                        <span className="text-sm text-zinc-400">
-                          Você completou "
-                          <span className="text-zinc-100">{goal.title}</span>"
-                          às <span className="text-zinc-100">{time}h</span>
-                        </span>
-                        <GoalAnnotationDialog
-                          goalId={String(goal.id)}
-                          annotation={goal.annotation}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteCompleteGoal(goal.id)}
-                          className="text-sm text-zinc-500 cursor-pointer underline"
-                        >
-                          Desfazer
-                        </button>
+                      <li key={goal.id} className="flex flex-col gap-2">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="size-4 text-cyan-500" />
+                          <span className="text-sm text-zinc-400">
+                            Você completou "
+                            <span className="text-zinc-100">{goal.title}</span>"
+                            às <span className="text-zinc-100">{time}h</span>
+                          </span>
+                          <GoalAnnotationDialog
+                            goalId={String(goal.id)}
+                            annotation={goal.annotation}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteCompleteGoal(goal.id)}
+                            className="text-sm text-zinc-500 cursor-pointer underline"
+                          >
+                            Desfazer
+                          </button>
+                        </div>
+                        {goal.annotation && (
+                          <p className="text-sm text-zinc-400 italic border-l-2 border-zinc-600 pl-2">
+                            {goal.annotation}
+                          </p>
+                        )}
                       </li>
                     );
                   })}
