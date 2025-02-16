@@ -6,6 +6,7 @@ import {
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import { createCompletionRoute } from "./routes/create-completion";
+import { createGoalCompletionAnnotationRoute } from "./routes/create-completion-annotation";
 import { createGoalRoute } from "./routes/create-goal";
 import { deleteCompletionRoute } from "./routes/delete-completion";
 import { deleteGoalRoute } from "./routes/delete-goal";
@@ -27,6 +28,7 @@ app.register(getPendingRoute);
 app.register(getWeekSummaryRoute);
 app.register(deleteCompletionRoute);
 app.register(deleteGoalRoute);
+app.register(createGoalCompletionAnnotationRoute);
 
 app
   .listen({

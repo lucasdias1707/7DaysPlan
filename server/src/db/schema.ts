@@ -19,6 +19,7 @@ export const goalCompletions = pgTable("goal_completions", {
   goalId: text("goal_id")
     .references(() => goals.id)
     .notNull(),
+  goalAnnotation: text("goal_annotation"),
   createdAt: timestamp("created_at", { withTimezone: false })
     .notNull()
     .defaultNow(),

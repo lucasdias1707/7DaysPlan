@@ -8,7 +8,7 @@ import { InOrbitIcon } from "./7daysplan-icon";
 import { PendingGoals } from "./pending-goals";
 import { Button } from "./ui/button";
 import { DialogTrigger } from "./ui/dialog";
-import ExampleDialog from "./ui/dialog-text";
+import GoalAnnotationDialog from "./ui/dialog-text";
 import { Progress, ProgressIndicator } from "./ui/progress-bar";
 import { Separator } from "./ui/separator";
 
@@ -99,7 +99,10 @@ export function Summary() {
                           <span className="text-zinc-100">{goal.title}</span>"
                           às <span className="text-zinc-100">{time}h</span>
                         </span>
-                        <ExampleDialog />
+                        <GoalAnnotationDialog
+                          goalId={String(goal.id)}
+                          annotation={goal.annotation}
+                        />
                         <button
                           type="button"
                           onClick={() => handleDeleteCompleteGoal(goal.id)}
