@@ -4,7 +4,7 @@ import ptBR from "dayjs/locale/pt-BR";
 import { CheckCircle2, Plus } from "lucide-react";
 import { deleteGoalCompletion } from "../http/delete-goal-completion";
 import { getSummary } from "../http/get-summary";
-import { InOrbitIcon } from "./7daysplan-icon";
+import { SevenDaysPlanIcon } from "./7daysplan-icon";
 import { PendingGoals } from "./pending-goals";
 import { Button } from "./ui/button";
 import { DialogTrigger } from "./ui/dialog";
@@ -43,7 +43,7 @@ export function Summary() {
     <div className="py-10 max-w-[480px] px-5 mx-auto flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <InOrbitIcon />
+          <SevenDaysPlanIcon />
           <span className="text-lg font-semibold capitalize">
             {firstDayOfWeek} - {lastDayOfWeek}
           </span>
@@ -113,7 +113,7 @@ export function Summary() {
                           </button>
                         </div>
                         {goal.annotation && (
-                          <p className="text-sm text-zinc-400 italic border-l-2 border-zinc-600 pl-2">
+                          <p className="text-sm text-zinc-400 italic border-l-2 leading-relaxed border-zinc-600 pl-2 text-wrap max-w-96">
                             {goal.annotation}
                           </p>
                         )}
