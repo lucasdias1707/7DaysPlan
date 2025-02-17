@@ -25,6 +25,7 @@ export async function getWeekSummary() {
         id: goalCompletions.id,
         title: goals.title,
         completedAt: goalCompletions.createdAt,
+        goalAnnotation: goalCompletions.goalAnnotation,
         completedAtDate: sql/**sql*/ `
         DATE(${goalCompletions.createdAt})
         `.as("completedAtDate"),
@@ -49,6 +50,7 @@ export async function getWeekSummary() {
             JSON_BUILD_OBJECT(
               'id', ${goalsCompletedInWeek.id},
               'title', ${goalsCompletedInWeek.title},
+              'annotation', ${goalsCompletedInWeek.goalAnnotation},
               'completedAt', ${goalsCompletedInWeek.completedAt}
             )
           )      
