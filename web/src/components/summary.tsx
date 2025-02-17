@@ -1,6 +1,8 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import ptBR from "dayjs/locale/pt-BR";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { CheckCircle2, Plus } from "lucide-react";
 import { deleteGoalCompletion } from "../http/delete-goal-completion";
 import { getSummary } from "../http/get-summary";
@@ -12,7 +14,14 @@ import GoalAnnotationDialog from "./ui/dialog-text";
 import { Progress, ProgressIndicator } from "./ui/progress-bar";
 import { Separator } from "./ui/separator";
 
+// Configurar plugins do dayjs
+dayjs.extend(utc);
+dayjs.extend(timezone);
 dayjs.locale(ptBR);
+
+// Identificar timezone do usuário
+const userTimezone =
+  Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Sao_Paulo";
 
 export function Summary() {
   const queryClient = useQueryClient();
@@ -20,7 +29,7 @@ export function Summary() {
   const { data } = useQuery({
     queryKey: ["summary"],
     queryFn: getSummary,
-    staleTime: 1000 * 60, //60 seconds
+    staleTime: 1000 * 60, // 60 segundos
   });
 
   if (!data) {
@@ -34,8 +43,15 @@ export function Summary() {
     queryClient.invalidateQueries({ queryKey: ["pending-goals"] });
   }
 
-  const firstDayOfWeek = dayjs().startOf("week").format("D MMM");
-  const lastDayOfWeek = dayjs().endOf("week").format("D MMM");
+  // Converter início e fim da semana para timezone correto
+  const firstDayOfWeek = dayjs()
+    .tz(userTimezone)
+    .startOf("week")
+    .format("D MMM YYYY");
+  const lastDayOfWeek = dayjs()
+    .tz(userTimezone)
+    .endOf("week")
+    .format("D MMM YYYY");
 
   const completedPercentage = Math.round((data.completed * 100) / data.total);
 
@@ -77,8 +93,15 @@ export function Summary() {
         <h2 className="text-xl font-medium">Sua semana</h2>
         {data.goalsPerDay &&
           Object.entries(data.goalsPerDay).map(([date, goals]) => {
-            const weekDay = dayjs(date).format("dddd");
-            const formattedDate = dayjs(date).format("D [de] MMMM");
+            // Verificar o que o backend está retornando
+            console.log("Data original do backend:", date);
+
+            // Corrigir a data para o timezone correto
+            const formattedDate = dayjs
+              .utc(date)
+              .tz(userTimezone)
+              .format("D [de] MMMM YYYY");
+            const weekDay = dayjs.utc(date).tz(userTimezone).format("dddd");
 
             return (
               <div key={date} className="flex flex-col gap-4">
@@ -90,7 +113,14 @@ export function Summary() {
                 </h3>
                 <ul className="flex flex-col gap-3">
                   {goals.map((goal) => {
-                    const time = dayjs(goal.completedAt).format("HH:mm");
+                    // Log para validar horário no Safari
+                    console.log("Horário original:", goal.completedAt);
+
+                    // Corrigir timezone antes de formatar
+                    const time = dayjs
+                      .utc(goal.completedAt)
+                      .tz(userTimezone)
+                      .format("HH:mm");
                     return (
                       <li key={goal.id} className="flex flex-col gap-2">
                         <div className="flex items-center gap-2">
